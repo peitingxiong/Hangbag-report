@@ -1,0 +1,454 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Hang-bag CRSI 阶段汇报</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&family=Noto+Serif+SC:wght@600;900&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one reading column (~74ch) with wide breakout bands for tables; lab-notebook ink on cool paper. */
+:root{
+  --paper:#f3f5f4; --sheet:#ffffff; --ink:#1b2422; --muted:#5d6b68; --rule:#d5dcda;
+  --accent:#1d5c63; --accent-soft:#e1eeee; --ok:#1f7a45; --ok-soft:#e2f2e7; --bad:#b23a30; --bad-soft:#f8e4e1; --warn:#9a6a10; --warn-soft:#f6edd8;
+  --f-display:"Noto Serif SC","Songti SC",serif; --f-body:"Noto Sans SC","PingFang SC","Microsoft YaHei",sans-serif; --f-mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --paper:#121816; --sheet:#1a2220; --ink:#e3ebe8; --muted:#97a6a2; --rule:#2e3a37;
+  --accent:#7cc4c9; --accent-soft:#1d3335; --ok:#6fcf93; --ok-soft:#183026; --bad:#f08b80; --bad-soft:#3a1f1c; --warn:#e2b55a; --warn-soft:#352b17; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#121816; --sheet:#1a2220; --ink:#e3ebe8; --muted:#97a6a2; --rule:#2e3a37;
+  --accent:#7cc4c9; --accent-soft:#1d3335; --ok:#6fcf93; --ok-soft:#183026; --bad:#f08b80; --bad-soft:#3a1f1c; --warn:#e2b55a; --warn-soft:#352b17; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.75;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 64px}
+.wrap{max-width:1080px;margin:0 auto;position:relative}
+.col{max-width:760px}
+header.top{padding-block:44px 24px;border-bottom:2px solid var(--ink);margin-bottom:24px}
+.eyebrow{font-family:var(--f-mono);font-size:12px;letter-spacing:.08em;color:var(--muted);text-transform:uppercase}
+h1{font-family:var(--f-display);font-weight:900;font-size:clamp(28px,5vw,42px);line-height:1.2;margin:8px 0 10px;text-wrap:balance}
+h2{font-family:var(--f-display);font-weight:600;font-size:23px;margin:52px 0 12px;text-wrap:balance;display:flex;gap:12px;align-items:baseline}
+h2 .n{font-family:var(--f-mono);font-size:14px;color:var(--accent);font-weight:500}
+h3{font-size:16px;margin:24px 0 8px}
+p{margin:0 0 12px}
+.lead{font-size:15.5px;color:var(--muted)}
+code,.mono{font-family:var(--f-mono);font-size:.88em}
+code{background:var(--accent-soft);padding:1px 5px;border-radius:3px;word-break:break-word}
+ul{margin:0 0 12px;padding-left:1.3em}
+li{margin-bottom:4px}
+.scroll{overflow-x:auto;margin:12px 0 20px;border:1px solid var(--rule);background:var(--sheet)}
+table{border-collapse:collapse;width:100%;font-size:13.5px}
+th,td{padding:8px 10px;border-bottom:1px solid var(--rule);text-align:left;vertical-align:top}
+th{font-weight:500;color:var(--muted);font-size:12px;letter-spacing:.04em;background:var(--paper)}
+td.num,th.num{font-family:var(--f-mono);font-variant-numeric:tabular-nums;white-space:nowrap}
+tr:last-child td{border-bottom:0}
+.pill{display:inline-block;font-family:var(--f-mono);font-size:12px;padding:1px 7px;border-radius:999px;white-space:nowrap}
+.pill.ok{background:var(--ok-soft);color:var(--ok)} .pill.bad{background:var(--bad-soft);color:var(--bad)}
+.rate{font-family:var(--f-mono);font-variant-numeric:tabular-nums;font-weight:500}
+.bar{height:6px;background:var(--rule);border-radius:3px;overflow:hidden;min-width:70px;margin-top:4px}
+.bar i{display:block;height:100%;background:var(--accent)}
+.sub{font-size:12px;color:var(--muted);display:block;margin-top:2px}
+.note{border-left:3px solid var(--warn);background:var(--warn-soft);padding:10px 14px;margin:12px 0 16px;font-size:14px}
+.steps{padding-left:1.4em;margin:0 0 12px}
+.steps>li{margin-bottom:8px}
+.findings{counter-reset:f;list-style:none;padding:0}
+.findings>li{counter-increment:f;padding:10px 0 10px 40px;position:relative;border-bottom:1px solid var(--rule)}
+.findings>li::before{content:counter(f);position:absolute;left:0;top:10px;font-family:var(--f-mono);color:var(--accent);font-size:13px;border:1px solid var(--accent);width:24px;height:24px;border-radius:50%;display:grid;place-items:center;line-height:1}
+/* glossary terms */
+.term{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer;border-bottom:1px dashed var(--accent);text-align:left}
+.term:hover,.term[aria-expanded="true"]{color:var(--accent)}
+.term:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.hint{font-size:12.5px;color:var(--muted);margin:-4px 0 8px}
+.pop{position:absolute;z-index:40;max-width:min(380px,calc(100vw - 32px));background:var(--sheet);border:1px solid var(--accent);border-radius:6px;padding:10px 14px;font-size:13.5px;line-height:1.65;box-shadow:0 6px 24px rgba(0,0,0,.18)}
+.pop b{display:block;color:var(--accent);margin-bottom:2px}
+/* evolution strip: real sequence of memory designs */
+.evo{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));border:1px solid var(--rule);background:var(--sheet);margin:12px 0 20px}
+.evo>div{padding:10px 12px;border-right:1px solid var(--rule);min-width:0}
+.evo>div:last-child{border-right:0}
+.evo .tag{font-family:var(--f-mono);font-size:11.5px;color:var(--accent)}
+.evo b{display:block;margin:2px 0 2px;font-size:13.5px}
+.evo p{font-size:12.5px;color:var(--muted);margin:0;line-height:1.6}
+.evo .inrep{outline:2px solid var(--accent);outline-offset:-2px}
+/* matrix */
+.mx td{text-align:center;font-family:var(--f-mono);font-size:12.5px;white-space:nowrap}
+.mx td:first-child,.mx th:first-child{text-align:left}
+.mx th{text-align:center}
+.dot{width:22px;height:22px;border-radius:4px;border:0;display:inline-grid;place-items:center;cursor:pointer;font:500 12px var(--f-mono);margin:1px}
+.dot.ok{background:var(--ok);color:var(--sheet)} .dot.bad{background:var(--bad-soft);color:var(--bad);outline:1px solid var(--bad)}
+.dot:focus-visible,.vbtn:focus-visible,.tab:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.blank{color:var(--rule)}
+.mx td{min-width:170px;max-width:220px;white-space:normal;text-align:left;font-family:var(--f-body);font-size:12.5px;line-height:1.5}
+.mx td.blank{text-align:center;min-width:60px}
+.mx td:first-child{min-width:0;font-family:var(--f-mono)}
+.run{display:flex;gap:6px;align-items:flex-start;padding:2px 0}
+.run+.run{border-top:1px dashed var(--rule)}
+.run .dot{flex:none}
+.okt{color:var(--ok);font-family:var(--f-mono);font-size:12px;padding-top:2px}
+.cat{display:inline-block;font:500 11px var(--f-mono);background:var(--bad-soft);color:var(--bad);border-radius:3px;padding:0 5px;margin-right:5px;line-height:18px}
+.own{font-size:12px;color:var(--muted);white-space:nowrap}
+.own.fw{color:var(--warn);font-weight:500}
+.fix{display:block;margin-top:6px;padding:6px 10px;border-left:3px solid var(--accent);background:var(--accent-soft);font-size:13px;line-height:1.6}
+/* tabs */
+.tabs{display:flex;flex-wrap:wrap;gap:6px;margin:12px 0;position:sticky;top:env(safe-area-inset-top,0px);background:var(--paper);padding-block:8px;z-index:5;border-bottom:1px solid var(--rule)}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--paper)}
+.tab{font:500 13px var(--f-body);border:1px solid var(--rule);background:var(--sheet);color:var(--ink);padding:6px 12px;border-radius:4px;cursor:pointer}
+.tab[aria-selected="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.tab .rate{font-size:11px;margin-left:6px;opacity:.8}
+.vhead{display:flex;flex-wrap:wrap;gap:4px 18px;align-items:baseline;margin:8px 0 8px}
+.vhead .big{font-family:var(--f-display);font-size:32px;font-weight:900;font-variant-numeric:tabular-nums}
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px 24px;margin:8px 0 12px}
+.facts>div{min-width:0}
+.facts h4{font-size:12px;letter-spacing:.06em;color:var(--muted);margin:0 0 4px;font-weight:500}
+.facts ul{font-size:14px;margin:0}
+details{border:1px solid var(--rule);background:var(--sheet);margin:8px 0;padding:0 14px}
+details[open]{padding-bottom:12px}
+summary{cursor:pointer;padding:8px 0;font-weight:500;font-size:14px}
+.prose{white-space:pre-wrap;font-size:13px;color:var(--muted)}
+.mem{list-style:none;padding:0;font-size:13.5px}
+.mem .src{display:block;margin-top:3px;font-size:12.5px;color:var(--accent)}
+.mem .sub{font-family:var(--f-mono);font-size:11.5px}
+.mem li{padding:6px 0;border-bottom:1px dashed var(--rule)}
+.vbtn{font:500 12px var(--f-mono);border:1px solid var(--accent);color:var(--accent);background:transparent;padding:3px 8px;border-radius:3px;cursor:pointer;white-space:nowrap}
+.vbtn:hover{background:var(--accent);color:var(--sheet)}
+td.reason{min-width:300px;max-width:560px}
+.stages{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin:12px 0 20px}
+.stage{background:var(--sheet);border:1px solid var(--rule);border-top:3px solid var(--accent);padding:14px 16px;min-width:0;display:flex;flex-direction:column;gap:8px}
+.stage .no{font:500 12px var(--f-mono);color:var(--accent);letter-spacing:.06em}
+.stage h3{margin:0;font-size:16px}
+.stage .ver{font:12px var(--f-mono);color:var(--muted)}
+.stage p{margin:0;font-size:13.5px}
+.stage .lbl{font-size:12px;color:var(--muted);font-weight:500;display:block}
+.stage .case{background:var(--bad-soft);padding:6px 10px;font-size:13px;border-radius:3px}
+.stage video{width:100%;max-width:100%;aspect-ratio:640/384;background:#000;display:block;border-radius:3px}
+.stage .next{border-left:3px solid var(--accent);background:var(--accent-soft);padding:6px 10px;font-size:13px}
+.cyc td{background:var(--accent-soft);font-weight:500;font-size:12.5px}
+/* modal */
+.modal[hidden]{display:none}
+.findings ul{margin-top:6px}
+.modal{position:fixed;inset:0;background:rgba(10,14,13,.72);display:grid;place-items:center;z-index:50;
+  padding:max(16px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) max(16px,env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
+.modal .box{background:var(--sheet);max-width:900px;width:100%;max-height:100%;overflow:auto;padding:16px 18px;border-radius:6px}
+.modal video{width:100%;max-width:100%;background:#000;display:block;aspect-ratio:640/384}
+.modal .mh{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:10px}
+.modal button.x{font:500 14px var(--f-body);border:1px solid var(--rule);background:var(--paper);color:var(--ink);padding:4px 12px;border-radius:4px;cursor:pointer}
+.modal .why{font-size:14px;margin-top:10px}
+footer{margin-top:56px;padding-top:14px;border-top:1px solid var(--rule);font-size:12.5px;color:var(--muted)}
+footer ul{margin:4px 0 0}
+@media (max-width:560px){h2{font-size:20px}}
+</style>
+
+<div class="wrap">
+<header class="top">
+  <div class="eyebrow">CommunicationRSI × π0.5 · RoboPoly hang_bag · 2026-10-28</div>
+  <h1>Hang-bag CRSI 阶段汇报</h1>
+  <p class="lead col">纯 π0.5 基线与 CRSI store_v5 的对比，以及方案是怎样一步步迭代到 v5 的。</p>
+</header>
+
+<section class="col"><h2><span class="n">01</span>结论</h2>
+<p class="hint">虚线词可点开查看解释。</p></section>
+<div class="scroll"><table id="summary"></table></div>
+<section class="col">
+<ol class="findings">
+  <li><b>底层 VLA 决定上限。</b>未微调的 pi05_base 0/10；LoRA 微调后，公共 seed 上 5/10。</li>
+  <li><b>store_v5 追平基线。</b>同样 10 个 seed，store_v5 5/10，LoRA 基线 5/10。逐 seed 看，v5 多成功 seed 43，少成功 seed 741192977。</li>
+  <li><b>每一步改进都来自上一版的失败。</b>
+    <ul>
+      <li>π0.5 听不懂训练标签以外的指令，所以加了代码松爪；</li>
+      <li>松爪的时机不对，所以改为由代码判断包的位置，并加了 lift_bag。</li>
+    </ul>
+    v5 中，左臂阶段由框架造成的失败为 0。</li>
+  <li><b>瓶颈转到了右臂。</b>v5 的 5 局失败全在右臂一侧：抓空、夹住后不提起、没挂上、太慢、不启动。</li>
+  <li><b>记忆还没起作用。</b>v5 只形成了 1 条规则（包在原位时选 lift_bag），第 8 局后才出现，之后没有机会用上。</li>
+</ol>
+</section>
+
+<section class="col"><h2><span class="n">02</span>设定</h2>
+<ul>
+  <li><b>任务</b>：左臂把包放到桌子中间，右臂把包挂到钩上。仿真器判定 bag_hung 即为成功。每局上限 1900 步，20 Hz。</li>
+  <li><b>π0.5 指令</b>：只用训练标签原文。左臂 <code>pick up bag and place in middle</code>，右臂 <code>pick up bag and put on hook</code>。</li>
+  <li><b>seed</b>：LoRA 基线跑 20 个；pi05_base 和 store_v5 跑其中 10 个公共 seed，store_v5 从空记忆开始。</li>
+  <li><b>随机性</b>：同一 seed 加上同样的决策序列，轨迹完全相同。每组约 10 局，相差 1–2 局属于噪声。</li>
+</ul>
+</section>
+
+<section class="col"><h2><span class="n">03</span>方案迭代</h2>
+<p>每个阶段的失败案例，就是下一步改进的依据。录像按约 3 倍速自动播放，左上角是原始步数。</p></section>
+<div class="stages" id="stages"></div>
+
+<section class="col"><h2><span class="n">04</span>store_v5 的 RSI 工作机制</h2>
+<p>两条臂各是一个 agent。决策由 Qwen3-VL-8B 做；动作由 π0.5 执行，指令始终用训练原文；判断包的位置、执行代码动作由代码负责。agent 在下面四个时刻做决策：</p>
+</section>
+<div class="scroll"><table>
+<thead><tr><th>时刻</th><th>谁来决策</th><th>可以选什么</th><th>依据</th></tr></thead>
+<tbody>
+<tr><td><b>1. 选子任务</b><span class="sub">本臂空闲时</span></td><td>Qwen <button class="term" data-t="plan" type="button">规划器</button></td><td>左臂：放包 place_bag_in_middle / 放后收回 retreat_after_place / 原地保持 hold_pose<br>右臂：挂包 hang_bag_on_hook / 原地保持 hold_pose</td><td>图像、本臂状态、对方消息、记忆。右臂必须先自己确认左臂已经放好，才能开始挂包。</td></tr>
+<tr><td><b>2. 检查是否完成</b><span class="sub">子任务运行 192 步后，每 64 步一次</span></td><td>Qwen 看图 + 代码算数值</td><td>通过 / 不通过</td><td>由 Qwen 回答"包在桌上吗"这类看图问题，代码判断夹爪开合等数值，全部为"是"才算通过。</td></tr>
+<tr><td><b>3. 中途决策</b><span class="sub">连续 4 次检查不过，并且手臂不动</span></td><td>Qwen</td><td>continue / pause / 代码动作，代码动作按包的位置提供（见下表）</td><td>代码给出包的位置和左臂下一步该做什么，再加上记忆。</td></tr>
+<tr><td><b>4. 更新记忆</b><span class="sub">每局结束</span></td><td>代码 + Qwen improver</td><td>追加一条轨迹记录，重写规则</td><td>代码算出的关键步数，以及每次中途决策之后有没有进展。</td></tr>
+</tbody></table></div>
+<section class="col">
+<h3>中途决策：按包的位置提供选项</h3>
+<p>代码对全局图像做颜色分割，和操作开始那一帧比较包的位移；"举在中间"和"放在中间桌面"由左臂末端高度区分。只用 agent 自己看得到的观测。</p>
+</section>
+<div class="scroll"><table>
+<thead><tr><th>包的位置</th><th>左夹爪</th><th>左臂下一步</th><th>提供给 agent 的选项</th></tr></thead>
+<tbody>
+<tr><td>原位</td><td>张开</td><td>接近并夹住</td><td>continue / pause</td></tr>
+<tr><td><b>原位</b></td><td><b>闭合</b></td><td><b>提起</b></td><td>continue / pause / <b>lift_bag</b></td></tr>
+<tr><td>离开原位，未到中间</td><td>闭合</td><td>搬向中间</td><td>continue / pause</td></tr>
+<tr><td>在中间，还举着</td><td>闭合</td><td>放低</td><td>continue / pause</td></tr>
+<tr><td><b>在中间，已在桌面</b></td><td><b>闭合</b></td><td><b>松爪</b></td><td>continue / pause / <b>release_gripper</b></td></tr>
+<tr><td>在中间</td><td>张开</td><td>后撤</td><td>无，操作完成</td></tr>
+</tbody></table></div>
+<section class="col">
+<h3>两个代码动作</h3>
+<ul>
+  <li><b>lift_bag</b>：夹爪保持闭合，末端竖直抬高 0.10 m（每步最多 0.02 m，最多 32 步）。之后交还 π0.5 继续执行原指令。每个操作最多做 2 次。</li>
+  <li><b>release_gripper</b>：关节不动，把夹爪张开 16 步，再交还 π0.5。</li>
+  <li>右臂没有代码动作，中途决策只能选 continue 或 pause。</li>
+</ul>
+<h3>记忆：在线滚动的轨迹记忆</h3>
+<ol class="steps">
+  <li><b>记录</b>：每局结束后，代码追加一条事实记录，包括关键步数，以及每次中途决策之后有没有进展；再附上 Qwen 写的一两句简述。</li>
+  <li><b>规则</b>：Qwen 读全部记录，重写整套规则。</li>
+  <li><b>核实</b>：程序逐条核实规则，至少 2 局支持、并且反驳少于支持，才保留。</li>
+  <li><b>使用</b>：下一局的规划器和中途决策都读"规则 + 全部记录"。</li>
+</ol>
+<p><b>目前的问题</b>：</p>
+<ul>
+  <li>规则的"支持"只看选项之后有没有进展，失败局也会被算作支持；</li>
+  <li>第 9、10 局记录太长，超过 token 上限，没有更新；</li>
+  <li>包被手臂挡住时，代码会误报"包已提起"。</li>
+</ul>
+</section>
+
+<section class="col"><h2><span class="n">05</span>逐 seed 对比</h2>
+<p class="hint">字母为失败类别；点方块可看录像。</p></section>
+<div class="scroll"><table class="mx" id="matrix"></table></div>
+<section class="col"><h3>失败统计</h3></section>
+<div class="scroll"><table id="failstats"></table></div>
+<section class="col"><ul>
+  <li><b>v5 的失败全在右臂</b>：E、F、J、K、L 各 1 局。右臂没有代码动作，中途只能选 continue 或 pause。</li>
+  <li><b>基线的失败</b>：在 8 局失败里，右臂一次都没动过；左臂要么没提起包，要么提起后不松爪。</li>
+</ul></section>
+
+<section class="col"><h2><span class="n">06</span>各版本详情</h2></section>
+<div class="tabs" role="tablist" id="tabs"></div>
+<div id="panel"></div>
+
+<section class="col"><h2><span class="n">07</span>改进方向</h2>
+<p>针对 v5 剩下的右臂失败：</p>
+<ul>
+  <li><b>右臂抓空后空手去挂</b>（L，seed 5）：右臂夹爪闭合后，看包的像素是否跟着手移动来判断有没有抓空；抓空就张开重抓。</li>
+  <li><b>右臂夹住后不提起包</b>（K，seed 26）：把 lift_bag 扩展到右臂的挂包操作。在包已在中间、右夹爪闭合、手不动时提供。</li>
+  <li><b>左臂撤回时拖走包，右臂没启动</b>（J，seed 741192977）：release_gripper 之后，先由代码把张开的手竖直抬起，再交还 π0.5，避免手勾住提手。</li>
+</ul>
+</section>
+
+<footer>数据：服务器 /home/zyf/peiting 下的
+<code>duomind/evaluations/robopoly_closed_loop/seven_tasks_ckpt9999_n20_20261015_214750</code>（LoRA 基线）、
+<code>hang_bag/pi05_base/evidence/pi05_base_baseline</code>（pi05_base 基线）、
+<code>hang_bag/v5/evidence/clean_rsi/store_v5_common10</code>（store_v5）。迭代案例的录像来自
+<code>hang_bag/instr_menu/evidence/clean_rsi/store_instr_v1</code> 和 <code>hang_bag/v4/evidence/clean_rsi/store_v4_common10</code>。</footer>
+
+</div>
+
+<div class="modal" id="modal" hidden role="dialog" aria-modal="true" aria-labelledby="mtitle">
+  <div class="box">
+    <div class="mh"><b id="mtitle"></b><button class="x" id="mclose" type="button">关闭</button></div>
+    <video id="mvideo" controls playsinline preload="metadata"></video>
+    <div class="why" id="mwhy"></div>
+  </div>
+</div>
+
+<script id="data" type="application/json">{"baselines": {"lora_base": {"config": "模型：RoboPoly 七任务共享 LoRA 微调的 π0.5（config pi05_robopoly_shared_lora），checkpoint /home/zyf/peiting/duomind/checkpoints/pi05_robopoly_shared_lora/robopoly7_bs16_check_v2/9999（bs16，第 10k 次更新，保存编号 9999），使用 checkpoint 自带的七任务 train-split norm stats（sha256 812354b6…）。评估批次 seven_tasks_ckpt9999_n20_20261015_214750（2026-10-15/16），模式为“规则辅助低层诊断，非完整 DuoMind”，单卡 GPU4 逐回合串行。种子：5 个原验证种子（5/26/38/43/62）+ 15 个排除训练种子的固定随机种子，失败不重跑。指令：hang_bag 在 duomind/setup/robopoly_task_schedule.py 中只有一个阶段，左臂全程 \"pick up bag and place in middle\"、右臂全程 \"pick up bag and put on hook\"（与训练数据的人工低层标签一致）；协议说明原文为“hang_bag：左右臂全程使用固定的中转/挂钩指令”，因此本任务实际没有任何指令切换（全部 events.jsonl 共 46417 步均为 phase 0、switched_after_action=false）。其他任务的切换依据仿真特权状态，不输入模型，无 VLM/Qwen。两臂各自单独推理：输入全局 RGB + 本臂腕部 RGB + 本臂 8 维状态 + 本臂指令；每次预测 16 步动作块、执行 8 步后重新观测（execute_steps=8），10 步去噪，噪声按 seed/step/arm 固定。步数上限 1900（协议：训练示范最长 1208 步 ×1.5 向上取整到百步，最低 1500；这是本次评估协议，不是论文标准）；控制频率 20 Hz（summary.control_hz=20，视频 20 fps，一帧一步）；控制模式 pd_joint_pos，physx_cpu 仿真；成功以环境 info.success（bag_hung）为准，成功即提前结束。", "success": 12, "total": 20, "rollouts": [{"seed": 5, "success": false, "steps": 1900, "reason": "左臂第158步夹住提手后，包仍在桌上原处，手臂静止约900步（约200–1100步）；之后才把包提起移向中间，但一直悬空拿着不松爪，到1900步夹爪仍闭合。右臂全程没动，夹爪始终张开。", "video": "videos/lora_base/5.mp4"}, {"seed": 26, "success": false, "steps": 1900, "reason": "左臂第95步夹住提手后，包在桌上、手臂静止约650步（约100–750步）；之后提起包移到中间附近，悬空拿着直到结束都没松爪。右臂全程没动、从未闭合夹爪。", "video": "videos/lora_base/26.mp4"}, {"seed": 38, "success": true, "steps": 1260, "reason": "第123步左臂夹住提手提起，第455步松爪把包放到中间；第601步右臂抓住包，抓住后静止约400步（约600–1000步），恢复后在第1260步挂上钩子。", "video": "videos/lora_base/38.mp4"}, {"seed": 43, "success": false, "steps": 1900, "reason": "左臂第93步夹住提手（开口约13 mm）后整局静止，包一直在桌上原处没被提起；右臂全程没动。即“夹住提手、包在桌上、手臂静止”的停顿一直持续到上限，没有自行恢复。", "video": "videos/lora_base/43.mp4"}, {"seed": 62, "success": false, "steps": 1900, "reason": "左臂第86步夹住提手后整局静止，包始终在桌上原处；右臂全程没动、夹爪一直张开。停顿到上限都没有恢复。", "video": "videos/lora_base/62.mp4"}, {"seed": 167468791, "success": true, "steps": 1166, "reason": "第104步左臂夹住提手，静止约200步（约100–300步）后恢复，提起包，第667步松爪放到中间；第836步右臂抓住包，第1166步挂上。", "video": "videos/lora_base/167468791.mp4"}, {"seed": 378631617, "success": true, "steps": 647, "reason": "第92步左臂夹住提手提起，第345步放到中间；第462步右臂抓住包，第647步挂上。全程没有明显停顿。", "video": "videos/lora_base/378631617.mp4"}, {"seed": 428097512, "success": true, "steps": 707, "reason": "第118步左臂夹住提手提起，第366步放到中间；第517步右臂抓住包，第707步挂上。", "video": "videos/lora_base/428097512.mp4"}, {"seed": 551363744, "success": true, "steps": 944, "reason": "第160步左臂夹住提手，短暂静止（约200–300步）后提起，第710步放到中间；第846步右臂抓住包，第944步挂上。", "video": "videos/lora_base/551363744.mp4"}, {"seed": 741192977, "success": true, "steps": 852, "reason": "第127步左臂夹住提手提起，约第400–419步松爪放到中间；第560步右臂抓住包，第852步挂上。", "video": "videos/lora_base/741192977.mp4"}, {"seed": 886916459, "success": true, "steps": 1378, "reason": "第134步左臂夹住提手后，包在桌上、手臂静止约450步（约150–600步），之后恢复提起，第1137步才松爪放到中间；第1275步右臂抓住包，第1378步挂上。", "video": "videos/lora_base/886916459.mp4"}, {"seed": 1068475682, "success": false, "steps": 1900, "reason": "左臂第116步夹住提手后，包在桌上、手臂静止约1200步（约150–1350步）；之后提起包移到中间，第1834步才松爪放下，只剩66步，右臂还没开始动就到了上限。", "video": "videos/lora_base/1068475682.mp4"}, {"seed": 1195536281, "success": false, "steps": 1900, "reason": "左臂第 148 步提起包，第 322 步就松爪，包落在中间偏左；第 752 步重新抓起，第 1313 步松爪，包落在中间但放歪了（抽帧确认）。右臂在剩下约 600 步里一直没动、从未闭合夹爪，没有去拿包。", "video": "videos/lora_base/1195536281.mp4"}, {"seed": 1203993522, "success": true, "steps": 1297, "reason": "第98步左臂夹住提手，短暂静止（约100–200步）后提起，第557步放到中间；第792步右臂抓住包，抓住后静止约200步（约800–1000步）后恢复，第1297步挂上。", "video": "videos/lora_base/1203993522.mp4"}, {"seed": 1343846251, "success": true, "steps": 1476, "reason": "第130步左臂夹住提手后，包在桌上、手臂静止约400步（约100–500步），恢复后提起，第953步放到中间；第1101步右臂抓住包，静止约200步后恢复，第1476步挂上。", "video": "videos/lora_base/1343846251.mp4"}, {"seed": 1542444242, "success": true, "steps": 686, "reason": "第95步左臂夹住提手提起，第307步放到中间；第434步右臂抓住包，第686步挂上（最快的一局）。", "video": "videos/lora_base/1542444242.mp4"}, {"seed": 1551913875, "success": true, "steps": 823, "reason": "第106步左臂夹住提手提起，第336步放到中间；第488步右臂抓住包，第823步挂上。", "video": "videos/lora_base/1551913875.mp4"}, {"seed": 1644325851, "success": false, "steps": 1900, "reason": "左臂第143步夹住提手后整局静止，包一直在桌上原处；右臂全程没动。停顿到上限都没有恢复。", "video": "videos/lora_base/1644325851.mp4"}, {"seed": 2013979138, "success": true, "steps": 981, "reason": "第153步左臂夹住提手，短暂静止后提起，第454步放到中间；第607步右臂抓住包，静止约200步（约700–900步）后恢复，第981步挂上。", "video": "videos/lora_base/2013979138.mp4"}, {"seed": 2035017701, "success": false, "steps": 1900, "reason": "左臂第151步提起包移到中间附近，之后一直悬空拿着包来回小幅移动，直到第1745步才松爪放下；右臂全程没动、从未闭合夹爪，剩余步数不够完成挂钩。", "video": "videos/lora_base/2035017701.mp4"}]}, "pi05_base": {"config": "模型：官方预训练 π0.5 基座 pi05_base（/home/zyf/peiting/duomind/models/pi05_base，来自 gs://openpi-assets，未做任何 RoboPoly 微调）。因为没有 LoRA 适配器，按 crsi_pi05_base/overlay/crsi_overlay/checkpoint_profile.py 把 pi05_robopoly_shared_lora 配置改为普通 gemma_2b（PaliGemma）/ gemma_300m（action expert）结构加载，action_dim 32、horizon 16 不变；pi05_base 不带 RoboPoly 归一化统计，沿用 LoRA 运行同一份七任务 train-split norm stats（duomind/assets/pi05_robopoly_shared_lora/local/robopoly_seven_tasks，model_metadata 中 norm_sha256=812354b6…，与 LoRA 基线完全相同），即只换权重。运行脚本是 duomind ckpt9999 n20 评估脚本的拷贝（crsi_pi05_base/overlay/tools/pi05_base_baseline/），调度、指令、噪声、execute_steps、成功判定与 LoRA 基线相同，2026-10-26 在 GPU4 上跑完，结果目录 crsi_pi05_base/evidence/pi05_base_baseline；只跑了 LoRA 基线 20 个种子中的前 10 个（5/26/38/43/62/1542444242/741192977/886916459/1195536281/2013979138）。指令：hang_bag 在 duomind/setup/robopoly_task_schedule.py 中只有一个阶段，左臂全程 \"pick up bag and place in middle\"、右臂全程 \"pick up bag and put on hook\"（与训练数据的人工低层标签一致）；协议说明原文为“hang_bag：左右臂全程使用固定的中转/挂钩指令”，因此本任务实际没有任何指令切换（全部 events.jsonl 共 46417 步均为 phase 0、switched_after_action=false）。其他任务的切换依据仿真特权状态，不输入模型，无 VLM/Qwen。两臂各自单独推理：输入全局 RGB + 本臂腕部 RGB + 本臂 8 维状态 + 本臂指令；每次预测 16 步动作块、执行 8 步后重新观测（execute_steps=8），10 步去噪，噪声按 seed/step/arm 固定。步数上限 1900（协议：训练示范最长 1208 步 ×1.5 向上取整到百步，最低 1500；这是本次评估协议，不是论文标准）；控制频率 20 Hz（summary.control_hz=20，视频 20 fps，一帧一步）；控制模式 pd_joint_pos，physx_cpu 仿真；成功以环境 info.success（bag_hung）为准，成功即提前结束。 补充：pi05_base 每回合动作被限幅的分量数约 6750–11068，LoRA 基线为 300–1718，说明基座输出的动作明显超出训练动作范围。", "success": 0, "total": 10, "rollouts": [{"seed": 5, "success": false, "steps": 1900, "reason": "两臂开局约160步内都闭合了夹爪，但夹的是空气（开口约0–4 mm），之后两臂一直大幅乱动；包整局留在桌上原处，从未被抓起。", "video": "videos/pi05_base/5.mp4"}, {"seed": 26, "success": false, "steps": 1900, "reason": "左臂第73步、右臂第153步对空闭合夹爪（开口≈0），两臂持续乱动；约第700步手臂把包撞歪，随后包被推到桌子左前角，从未被抓起。", "video": "videos/pi05_base/26.mp4"}, {"seed": 38, "success": false, "steps": 1900, "reason": "右臂第25步、左臂约第210步对空闭合夹爪并一直不张开，两臂乱动；约第450–700步之间包被手臂推到桌子左前边缘，从未被抓起。", "video": "videos/pi05_base/38.mp4"}, {"seed": 43, "success": false, "steps": 1900, "reason": "左臂第5步就对空闭合夹爪，右臂约第322步闭合（夹爪合拢在空中），两臂持续乱动；包整局留在原处，从未被抓起。", "video": "videos/pi05_base/43.mp4"}, {"seed": 62, "success": false, "steps": 1900, "reason": "右臂第1步、左臂第88步对空闭合夹爪，两臂持续乱动；包在中后段被手臂碰歪、推向右侧，但夹爪是闭合的，包没被抓起。", "video": "videos/pi05_base/62.mp4"}, {"seed": 741192977, "success": false, "steps": 1900, "reason": "左臂第50步、右臂第86步对空闭合夹爪（开口≈0）并一直保持闭合，两臂乱动；包整局留在原处，从未被抓起。", "video": "videos/pi05_base/741192977.mp4"}, {"seed": 886916459, "success": false, "steps": 1900, "reason": "左臂第10步、右臂第132步对空闭合夹爪，中途偶有短暂张合，但从未对准提手；两臂乱动，包整局留在原处，从未被抓起。", "video": "videos/pi05_base/886916459.mp4"}, {"seed": 1195536281, "success": false, "steps": 1900, "reason": "左臂第41步、右臂第65步对空闭合夹爪（开口≈0）并一直闭合，两臂乱动；包整局留在原处，从未被抓起。", "video": "videos/pi05_base/1195536281.mp4"}, {"seed": 1542444242, "success": false, "steps": 1900, "reason": "左臂约第289步、右臂约第355步闭合夹爪（落在空中），两臂乱动，后段左臂多次在包附近晃动但没抓住提手；包基本留在原处，从未被抓起。", "video": "videos/pi05_base/1542444242.mp4"}, {"seed": 2013979138, "success": false, "steps": 1900, "reason": "左臂第153步、右臂第305步对空闭合夹爪，两臂乱动；约第700步手臂把包撞倒，随后推到桌子左边缘，从未被抓起。", "video": "videos/pi05_base/2013979138.mp4"}]}}, "fail_tags": {"pi05_base": {"0": ["H", "对空抓取乱动，包没被抓起"], "1": ["H", "对空抓取乱动，包被撞走"], "2": ["H", "对空抓取乱动，包被撞走"], "3": ["H", "对空抓取乱动，包没被抓起"], "4": ["H", "对空抓取乱动，包被撞走"], "5": ["H", "对空抓取乱动，包没被抓起"], "6": ["H", "对空抓取乱动，包没被抓起"], "7": ["H", "对空抓取乱动，包没被抓起"], "8": ["H", "对空抓取乱动，包没被抓起"], "9": ["H", "对空抓取乱动，包被撞走"]}, "lora_base": {"0": ["B", "提到中间后悬空不放（停约 900 步才提起）"], "1": ["B", "提到中间后悬空不放（停约 650 步才提起）"], "3": ["A", "夹住提手后不提起，整局静止"], "4": ["A", "夹住提手后不提起，整局静止"], "11": ["F", "停约1200步，第1834步才放下"], "12": ["D", "左臂把包放歪，右臂 600 步没去拿"], "17": ["A", "夹住提手后不提起，整局静止"], "19": ["B", "提到中间后悬空，第 1745 步才放"]}}, "v5_common10": {"v5_common10": {"config": "π0.5 RoboPoly LoRA ckpt9999（10000 步）作低层，Qwen3-VL-8B（vLLM 8192 token）作规划、中途决策、完成检查和记忆改进；hang_bag 任务，每局 1900 步上限；10 个公共 seed，空记忆起步，每局结束后在线更新记忆（online_rolling）。代码 worktree crsi_v5，tag v5=4a41985（HEAD b0660de 只加了无人值守启动脚本）。中途决策触发沿用 v4：同一操作连续 ≥4 次检查失败且最近 2 次检查间手臂不动。", "changes": ["包的位置由代码判断：全局图像品红色分割，与操作开始帧比较像素位移（|dx|、|底边|≤5 px 为原位，dx≥75 px 为中间），中间时用左臂末端相对夹住时的高度（≤0.05 m）区分“已在桌面/还举着”。", "新代码动作 lift_bag：仅左臂 place 操作、包在原位且夹爪闭合时提供；闭合竖直抬 0.10 m，每步 ≤0.02 m，≤32 步，每操作 ≤2 次，之后交还 π0.5。", "release_gripper 只在“包在中间桌面且夹爪闭合”时提供（v4 只看夹爪闭合+Qwen 看到包在桌上）。", "中途决策输入加入 bag_situation（包位置、下一步动作），模型只在代码过滤后的选项里选。", "记忆换成轨迹记忆：每局一条代码事实记录 + Qwen 简述，规则每局从全部记录重写，host 核对支持/反驳。", "新增失败归因（代码预判 + 改进器），只写进报告，规划器看不到。", "steps.jsonl 每步记录两臂状态和包像素；分析工具 tools/analyze_v5.py。"], "memory_mechanism": "记忆 M = 规则在前 + 每局一条轨迹记录，成功失败都收、不淘汰，上限 32 条（超限报错不截断）。记录由代码从 steps.jsonl/summary.json 算出关键步数（左夹住、包离开原位、到中间、左松爪、放置确认、右启动、右夹住）和每次中途决策（情况、选项、之后 96 步内是否有进展），再加 Qwen 一两句简述；不带归因。每局后 Qwen 读全部记录重写整套规则（结构化：手臂/情境/动作/引用局），host 逐条核对：引用的局必须是 host 验证的支持局、支持 ≥2、反驳 < 支持，否则丢弃。本次 10 局最终 11 条（10 条记录 + 1 条规则）；规则被丢弃 32 次（28 次引用局未被核实、4 次子任务名非法）；第 9、10 局改进器提示约 6800 token 超过 5800 上限没有发送，只写代码事实记录。注意：mid 规则的“支持”只看选项之后有无进展，不看整局成败，所以失败局也能算支持；代码事实“bag lifted@”会被手臂遮挡误报（如 seed 2013979138 记为 88 步，实际约 640 步）。", "final_memory": ["[RULE ✓3 ✗0] When the left arm is lifting the bag, choose 'lift_bag' to ensure the bag is raised before the right arm attempts to hang it."], "final_memory_zh": ["[规则 ✓3 ✗0] 左臂处于“提起包”情境时，选择 lift_bag，确保包在右臂去挂之前已被提起。"], "final_memory_src": ["第 8 局（seed 886916459）后由改进器提出，只引用第 6 局；host 核实支持局为第 6、7、8 局（seed 1542444242、741192977、886916459，均为 lift_bag 后包离开原位），其中第 7 局整局失败也被算作支持。规则只在第 9、10 局可见，两局都没出现 lift_bag 选项，未被用到。"], "mid_decision_stats": "共 62 次中途决策：lift_bag 3 次（3/3 包随即离开原位并被 π0.5 搬到中间，2 局成功）；release_gripper 3 次（3/3 松开后放置检查通过，1 局成功、2 局因右臂失败）；pause 13 次、continue 43 次，按代码指标均无进展。lift_bag/release 都是“提供即被选”。", "success": 5, "total": 10, "rollouts": [{"idx": 1, "seed": 5, "success": false, "steps": 1900, "baseline_steps": null, "mid_decisions": "共 9 次，均为 continue/pause（左臂撤回时 3 次、右臂挂包时 6 次），无 lift_bag/release，之后均无进展。", "memory_note": "空记忆起步（第 1 局）。", "reason": "左臂 256 步夹住、580 步自行松爪放好；右臂 646 步启动，744 步夹爪闭合到 0 mm（抓空，抽帧确认手在提手前方），随后空手抬向挂钩，包在中间原地不动到 1900 步。基线同 seed 也失败。", "tag": ["L", "右臂抓空后空手去挂"], "fix": "右臂闭合后用包像素是否随手移动判断抓空，抓空则张开重抓。", "video": "videos/v5_common10/000_online_5_fail.mp4"}, {"idx": 2, "seed": 26, "success": false, "steps": 1900, "baseline_steps": null, "mid_decisions": "共 11 次，均为 continue（左臂撤回 5 次、右臂 6 次），无 lift_bag/release，无进展。", "memory_note": "1 条记录（seed 5），0 条规则。", "reason": "左臂 114 步夹住，约 330 步自行提起，600 步到中间，969 步自行松爪；右臂 986 步启动、1192 步夹住提手（10 mm），之后 700 步原地不动，包一直在桌上（抽帧确认）。基线同 seed 也失败。", "tag": ["K", "右臂夹住后不提起包"], "fix": "把 lift_bag 扩展到右臂挂包操作（包在中间、右爪闭合、手不动时提供）。", "video": "videos/v5_common10/001_online_26_fail.mp4"}, {"idx": 3, "seed": 38, "success": true, "steps": 752, "baseline_steps": 1260, "mid_decisions": "1 次（左臂撤回时 continue），无代码动作。", "memory_note": "2 条记录，0 条规则。", "reason": "第 316 步左臂放好，第 340 步右臂开始挂包，第 752 步成功（比基线 1260 步快）。", "video": "videos/v5_common10/002_online_38_SUCCESS.mp4"}, {"idx": 4, "seed": 43, "success": true, "steps": 1113, "baseline_steps": null, "mid_decisions": "4 次，均为 continue（左臂撤回 3 次、右臂 1 次），无代码动作。", "memory_note": "3 条记录，0 条规则。", "reason": "第 437 步左臂放好，第 476 步右臂开始挂包，第 1113 步成功（右臂 581 步夹住后停约 300 步再提起）。基线同 seed 失败。", "video": "videos/v5_common10/003_online_43_SUCCESS.mp4"}, {"idx": 5, "seed": 62, "success": false, "steps": 1900, "baseline_steps": null, "mid_decisions": "右臂 7 次（continue 6、pause 1），标签为“放低包”等左臂情境，无代码动作，无进展。", "memory_note": "4 条记录，0 条规则。", "reason": "左臂 348 步放好；右臂 408 步启动、487 步夹住，约 750–850 步把包提到挂钩高度，此后 1000 多步举在钩旁既没挂上也不松爪（抽帧确认）。基线同 seed 也失败。", "tag": ["E", "右臂举到钩旁挂不上"], "video": "videos/v5_common10/004_online_62_fail.mp4"}, {"idx": 6, "seed": 1542444242, "success": true, "steps": 1798, "baseline_steps": 686, "mid_decisions": "8 次：左臂 lift_bag 1 次（389 步，包离开原位，π0.5 接着搬到中间），其余 7 次 continue/pause 无进展。", "memory_note": "5 条记录，0 条规则；lift_bag 不是记忆引导的。", "reason": "左臂 124 步夹住后包不动，第 389 步 lift_bag 抬起（18 步），π0.5 继续搬运；第 828 步左臂放好，第 884 步右臂开始挂包，第 1798 步成功。比基线 686 步慢约 1100 步。", "fix": "lift_bag 只能在 389 步后触发（4 次失败检查+2 次不动），可缩短触发等待。", "video": "videos/v5_common10/005_online_1542444242_SUCCESS.mp4"}, {"idx": 7, "seed": 741192977, "success": false, "steps": 1900, "baseline_steps": 852, "mid_decisions": "8 次：左臂 lift_bag 1 次（389 步，成功提起并被搬到中间）、release_gripper 1 次（844 步，包在中间桌面，松开后放置检查通过）；其余 6 次 pause/continue 无进展。", "memory_note": "6 条记录，0 条规则。", "reason": "lift_bag 和 release 都生效（909 步放置确认）；但右臂 918 步起一直没动、夹爪从未闭合；左臂“撤回”（π0.5 仍用 place 指令）时手还挂在提手里，1150–1300 步把包拖回原位，1575 步又重新夹起（抽帧确认）。基线同 seed 852 步成功。", "tag": ["J", "左臂撤回拖走包，右臂未启动"], "fix": "release_gripper 后由代码先竖直抬起张开的手再交还 π0.5，避免勾住提手。", "video": "videos/v5_common10/006_online_741192977_fail.mp4"}, {"idx": 8, "seed": 886916459, "success": true, "steps": 1294, "baseline_steps": 1378, "mid_decisions": "2 次：左臂 lift_bag 1 次（389 步，包被提起，π0.5 继续搬到中间），撤回时 continue 1 次。", "memory_note": "7 条记录（含 seed 1542444242 的 lift_bag->progress），0 条规则。", "reason": "左臂 122 步夹住后包不动，第 389 步 lift_bag 抬起，π0.5 继续搬运；第 790 步左臂放好，第 850 步右臂开始挂包，第 1294 步成功（比基线 1378 步略快）。", "video": "videos/v5_common10/007_online_886916459_SUCCESS.mp4"}, {"idx": 9, "seed": 1195536281, "success": false, "steps": 1900, "baseline_steps": null, "mid_decisions": "9 次：左臂 release_gripper 1 次（844 步，包在中间桌面，松开后检查通过），其余 continue/pause 8 次无进展。", "memory_note": "8 条记录 + 1 条规则（lift_bag ✓3），本局包自行提起，规则用不上。", "reason": "左臂 134 步夹住、约 330 步自行提起、500 步到中间后举着不松，844 步 release_gripper 放下；右臂 918 步启动、1250 步夹住后静止约 550 步，1800 步才提起，1899 步包已到钩高但时间用完。基线同 seed 也失败。", "tag": ["F", "右臂夹住停顿太久，超时"], "fix": "右臂夹住后长时间不动时提供 lift_bag。", "video": "videos/v5_common10/008_online_1195536281_fail.mp4"}, {"idx": 10, "seed": 2013979138, "success": true, "steps": 1592, "baseline_steps": 981, "mid_decisions": "4 次：左臂 continue 2 次（454、584 步，代码误判包“已离开原位”）、release_gripper 1 次（1104 步，生效），撤回时 continue 1 次。", "memory_note": "9 条记录 + 1 条规则（lift_bag ✓3），但包被误判为已移动，lift_bag 没被提供，规则无从使用。", "reason": "左臂 88 步夹住后包在原位约 550 步（抽帧确认），手臂遮挡使包质心偏移 7 px > 5 px 阈值，代码判为“已移动”，没提供 lift_bag；约 640 步 π0.5 自行提起；第 1104 步 release_gripper，第 1110 步左臂放好，第 1190 步右臂开始挂包，第 1592 步成功（比基线 981 步慢）。", "fix": "“原位”判断改用包底边/面积，或放宽 dx 阈值到约 10 px。", "video": "videos/v5_common10/009_online_2013979138_SUCCESS.mp4"}]}}}</script>
+<script>
+const D = JSON.parse(document.getElementById('data').textContent);
+const B = D.baselines, V5 = D.v5_common10.v5_common10;
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+// glossary: every dashed term opens one of these
+const G = {
+  pi05base:["pi05_base", "官方预训练 π0.5，未在 RoboPoly 上微调。"],
+  lora:["LoRA ckpt9999", "π0.5 在 RoboPoly 七任务上做 LoRA 微调，取第 1 万步的权重。"],
+  fixed:["固定训练标签指令", "全程只用一条训练原文指令，没有规划，也没有检查。"],
+  plan:["Qwen 规划", "Qwen3-VL-8B 根据图像、本臂状态、对方消息和记忆，从放包、收回、挂包、hold_pose 中选一个子任务。"],
+  judge:["Qwen 检查", "子任务运行 192 步后，每 64 步回答一组是/否问题，全部为“是”才算完成。"],
+  mid:["中途决策", "连续 4 次检查不过，并且手臂不动，就判定为卡住，由 Qwen 读记忆后选一个处理选项。"],
+  cont:["continue", "继续执行原指令。"],
+  pause:["pause", "原地保持 32 步，再继续执行原指令。"],
+  online:["在线滚动记忆", "每局结束后立即更新记忆，下一局使用更新后的记忆。"],
+  bagstate:["包的位置由代码判断", "用全局图像的颜色分割，加上左臂末端高度，判断包在原位、搬运中、举在中间，还是已放在中间桌面。"],
+  lift:["lift_bag", "包在原位且左夹爪闭合时提供：代码把夹爪竖直抬高 0.10 m（最多 32 步），再交还 π0.5。"],
+  relpos:["按位置松爪", "只在包已放在中间桌面、左夹爪还闭合时，才提供 release_gripper。"],
+  traj:["轨迹记忆", "在线滚动：每局结束后由代码追加一条事实记录，再从全部记录重写规则（至少 2 局支持才保留），下一局使用更新后的记忆。"],
+};
+const T = (k, txt) => `<button class="term" type="button" data-t="${k}">${txt ?? G[k][0]}</button>`;
+
+const V = [
+  {key:'pi05_base', name:'π0.5 base 基线', d:B.pi05_base, vla:T('pi05base'), dec:T('fixed'), mem:'—', seeds:'公共 10 seed'},
+  {key:'lora_base', name:'LoRA 基线', d:B.lora_base, vla:T('lora'), dec:T('fixed'), mem:'—', seeds:'20 seed'},
+  {key:'v5_common10', name:'store_v5', d:V5, vla:T('lora'), dec:`${T('plan')} + ${T('judge')}，${T('bagstate')}<span class="sub">${T('mid')}：${T('cont')} / ${T('pause')} / ${T('lift')} / ${T('relpos')}</span>`, mem:`${T('online')}，${T('traj')}`, seeds:'公共 10 seed'},
+];
+const pill = ok => ok ? '<span class="pill ok">成功</span>' : '<span class="pill bad">失败</span>';
+// failure categories: [name, meaning, who is responsible]
+const CATS = {
+  A:["左臂夹住后不提起包", "包留在原位。", "低层 VLA"],
+  B:["左臂把包提到中间后悬空不放", "包已可放下，但夹爪不松开。", "低层 VLA"],
+  C:["左臂放好后没回起点", "检查要求左臂回到起点，导致右臂一直不开始。", "框架"],
+  D:["左臂把包放歪，右臂拿不到", "右臂没有去拿包。", "低层 VLA"],
+  E:["右臂挂包没完成", "包提起了，但没挂上钩。", "低层 VLA"],
+  F:["时间用完", "前面停顿太久，1900 步内没做完。", "低层 VLA"],
+  G:["记忆误导一直 hold", "规划器把记忆里的失败当成当前状态，整局 hold。", "框架"],
+  H:["对空抓取乱动", "未微调模型不会做这个任务。", "低层 VLA"],
+  I:["包未提起（缺少 lift_bag）", "左臂夹住提手后包一直在原位；中途选项里没有“提起包”，agent 只能松爪或 pause。", "框架"],
+  J:["右臂不启动", "轮到右臂挂包时，右臂整局不动，夹爪从不闭合。", "低层 VLA"],
+  K:["右臂夹住后不提起包", "右臂夹住提手后长时间不动，包一直在桌上；右臂没有 lift_bag。", "低层 VLA"],
+  L:["右臂抓空", "右臂夹爪闭合到 0 mm 却没夹到提手，随后空手去挂。", "低层 VLA"],
+};
+const chip = k => `<span class="cat" title="${esc(CATS[k][0])}">${k}</span>`;
+const TAGS = D.fail_tags;
+[['pi05_base',B.pi05_base],['lora_base',B.lora_base],['v5_common10',V5]]
+  .forEach(([k,g])=>g.rollouts.forEach((r,i)=>{ if(!r.success && !r.tag) r.tag=TAGS[k][i]; }));
+const pct = (a,b) => Math.round(100*a/b);
+const COMMON = [5,26,38,43,62,1542444242,741192977,886916459,1195536281,2013979138];
+
+// 01 summary
+(function(){
+  const rows = V.map(v => {
+    const d=v.d, common=d.rollouts.filter(r=>COMMON.includes(+r.seed));
+    const cs = common.length ? `${common.filter(r=>r.success).length}/${common.length}` : '—';
+    return `<tr><td><b>${esc(v.name)}</b></td><td>${v.vla}</td><td style="min-width:230px">${v.dec}</td><td style="min-width:190px">${v.mem}</td><td>${esc(v.seeds)}</td>
+      <td class="num"><span class="rate">${d.success}/${d.total}</span> <span class="sub">${pct(d.success,d.total)}%</span><div class="bar"><i style="width:${pct(d.success,d.total)}%"></i></div></td><td class="num">${cs}</td></tr>`;
+  }).join('');
+  document.getElementById('summary').innerHTML =
+    `<thead><tr><th>版本</th><th>底层 VLA</th><th>决策层</th><th>记忆</th><th>seed</th><th class="num">成功</th><th class="num">公共 10 seed</th></tr></thead><tbody>${rows}</tbody>`;
+})();
+
+// glossary popover
+const wrap=document.querySelector('.wrap'); let pop=null, popBtn=null;
+function closePop(){ if(pop){pop.remove();pop=null;} if(popBtn){popBtn.setAttribute('aria-expanded','false');popBtn=null;} }
+document.addEventListener('click',e=>{
+  const t=e.target.closest('.term');
+  if(!t){ if(pop && !e.target.closest('.pop')) closePop(); return; }
+  const same = t===popBtn; closePop(); if(same) return;
+  const [name,txt]=G[t.dataset.t];
+  pop=document.createElement('div'); pop.className='pop'; pop.setAttribute('role','note');
+  pop.innerHTML=`<b>${esc(name)}</b>${esc(txt)}`; wrap.appendChild(pop);
+  const r=t.getBoundingClientRect(), w=wrap.getBoundingClientRect();
+  const left=Math.max(0, Math.min(r.left-w.left, w.width-pop.offsetWidth));
+  pop.style.left=left+'px'; pop.style.top=(r.bottom-w.top+6)+'px';
+  popBtn=t; t.setAttribute('aria-expanded','true');
+});
+document.addEventListener('keydown',e=>{ if(e.key==='Escape') closePop(); });
+window.addEventListener('resize',closePop);
+
+// 03 iteration stages: each problem led to the next change; one failure case per stage
+const STAGES = [
+  {title:'无代码动作', ver:'instr_v1 · 2/10', clip:'clips/s1.mp4',
+   problem:'卡住时只能换一条 π0.5 指令，可 π0.5 只认训练原文，"release the bag" 让夹爪张不开。',
+   case:'seed 62：包举到中间后一直不放。',
+   next:'加代码松爪 release_gripper'},
+  {title:'加代码松爪', ver:'store_v4 · 4/10', clip:'clips/s2.mp4',
+   problem:'分不清包是没提起还是已放好，常在包没提起时松爪，π0.5 马上又夹回去。',
+   case:'seed 741192977：包在原位被松爪 12 次（基线这局成功）。',
+   next:'代码判断包的位置，加 lift_bag'},
+  {title:'判断包位置 + lift_bag', ver:'store_v5 · 5/10', clip:'clips/s3.mp4',
+   problem:'左臂解决了，lift 和松爪都生效；失败转到右臂。',
+   case:'seed 741192977：左臂收回时把包拖走，右臂没动。',
+   next:'见第 07 节'},
+];
+document.getElementById('stages').innerHTML = STAGES.map((g,i)=>`<div class="stage">
+  <span class="no">阶段 ${i+1} · ${esc(g.ver)}</span><h3>${esc(g.title)}</h3>
+  <video src="${g.clip}" autoplay muted loop playsinline preload="auto" aria-label="${esc(g.case)}"></video>
+  <p>${esc(g.problem)}</p>
+  <p class="case">${esc(g.case)}</p>
+  <div class="next">→ ${esc(g.next)}</div></div>`).join('');
+
+// modal
+const modal=document.getElementById('modal'), mv=document.getElementById('mvideo'); let lastFocus=null;
+function openVideo(vkey,i){
+  const v=V.find(x=>x.key===vkey), r=v.d.rollouts[i]; lastFocus=document.activeElement; closePop();
+  document.getElementById('mtitle').textContent=`${v.name} · seed ${r.seed}${r.cycle?` · 第 ${r.cycle} 轮 ${r.split}`:''} · ${r.success?'成功':'失败'} · ${r.steps} 步`;
+  document.getElementById('mwhy').innerHTML=(r.success?'':`<p>${chip(r.tag[0])}<b>${esc(CATS[r.tag[0]][0])}</b> · ${esc(r.tag[1])}</p>`)+`<b>${r.success?'过程':'失败原因'}：</b>${esc(r.reason)}`
+    +(r.fix?`<span class="fix">${esc(r.fix)}</span>`:'')+(r.mid_decisions?`<span class="sub">中途决策：${esc(r.mid_decisions)}</span>`:'')
+    +(r.memory_note?`<span class="sub">记忆变化：${esc(r.memory_note)}</span>`:'')
+    +(r.baseline_steps!=null?`<span class="sub">LoRA 基线同 seed：${esc(r.baseline_steps)} 步成功</span>`:'');
+  mv.src=r.video; modal.hidden=false; document.getElementById('mclose').focus();
+}
+function closeModal(){ mv.pause(); mv.removeAttribute('src'); mv.load(); modal.hidden=true; lastFocus&&lastFocus.focus(); }
+document.getElementById('mclose').onclick=closeModal;
+modal.addEventListener('click',e=>{ if(e.target===modal) closeModal(); });
+document.addEventListener('keydown',e=>{ if(e.key==='Escape'&&!modal.hidden) closeModal(); });
+document.addEventListener('click',e=>{ const b=e.target.closest('[data-v]'); if(b) openVideo(b.dataset.v,+b.dataset.i); });
+
+
+// 03 matrix
+(function(){
+  const seeds=B.lora_base.rollouts.map(r=>+r.seed), order=[...COMMON,...seeds.filter(s=>!COMMON.includes(s))];
+  const cols=['pi05_base','lora_base','v5_common10'].map(k=>V.find(v=>v.key===k));
+  const head=`<thead><tr><th>seed</th>${cols.map(c=>`<th>${esc(c.name)}</th>`).join('')}</tr></thead>`;
+  const body=order.map((s,ri)=>`<tr${ri===COMMON.length?' style="border-top:2px solid var(--ink)"':''}><td class="mono">${s}${ri===COMMON.length?'<span class="sub">↓ 基线扩展 seed</span>':''}</td>${cols.map(c=>{
+      const hits=c.d.rollouts.map((r,i)=>[r,i]).filter(([r])=>+r.seed===s);
+      if(!hits.length) return '<td class="blank">·</td>';
+      return '<td>'+hits.map(([r,i])=>`<div class="run"><button class="dot ${r.success?'ok':'bad'}" type="button" data-v="${c.key}" data-i="${i}" aria-label="${esc(c.name)} seed ${s} ${r.success?'成功':'失败'}，播放录像">${r.cycle||(r.success?'✓':'✗')}</button>${r.success?`<span class="okt">成功 · ${esc(r.steps)} 步</span>`:`<span>${chip(r.tag[0])}${esc(r.tag[1])}</span>`}</div>`).join('')+'</td>';
+    }).join('')}</tr>`).join('');
+  document.getElementById('matrix').innerHTML=head+'<tbody>'+body+'</tbody>';
+})();
+
+// 03b failure statistics
+(function(){
+  const cols=['pi05_base','lora_base','v5_common10'].map(k=>V.find(v=>v.key===k));
+  const cnt=(c,k)=>c.d.rollouts.filter(r=>!r.success&&r.tag[0]===k).length;
+  const crsi=cols.slice(2);
+  const rows=Object.keys(CATS).filter(k=>cols.some(c=>cnt(c,k))).map(k=>{
+    const n=cols.map(c=>cnt(c,k)), nc=crsi.reduce((a,c)=>a+cnt(c,k),0);
+    return `<tr><td>${chip(k)}<b>${esc(CATS[k][0])}</b><span class="sub">${esc(CATS[k][1])}</span></td><td><span class="own ${CATS[k][2]==='框架'?'fw':''}">${esc(CATS[k][2])}</span></td>${n.map(x=>`<td class="num">${x||'<span class="blank">0</span>'}</td>`).join('')}</tr>`;
+  }).join('');
+  const tot=cols.map(c=>c.d.total-c.d.success), totc=crsi.reduce((a,c)=>a+c.d.total-c.d.success,0);
+  document.getElementById('failstats').innerHTML=`<thead><tr><th>失败类别</th><th>归因</th>${cols.map(c=>`<th class="num">${esc(c.name)}</th>`).join('')}</tr></thead><tbody>${rows}
+    <tr class="cyc"><td>失败局数</td><td></td>${tot.map((x,i)=>`<td class="num">${x}/${cols[i].d.total}</td>`).join('')}</tr></tbody>`;
+})();
+
+// 05 version panels: hand-written summary; long raw notes stay folded
+const P = {
+  pi05_base:{cfg:['官方预训练 π0.5，未微调','其余设置与 LoRA 基线相同'],
+    ana:['0/10。双臂对着空气合爪、乱动，从没抓起过包','每局动作被限幅 6750–11068 次（LoRA 为 300–1718 次），输出远超训练动作范围'],
+    raw:[['配置记录',B.pi05_base.config]]},
+  lora_base:{cfg:['RoboPoly LoRA ckpt9999','全程固定训练标签指令，没有 CRSI'],
+    ana:['12/20（公共 seed 5/10）','8 局失败中，右臂都没动','左臂：3 局没提起包（A），3 局提起后悬空不放（B），1 局放歪（D），1 局太慢（F）','成功局里也常见"抓后停几十到几百步，再自己提起"'],
+    raw:[['配置记录',B.lora_base.config]]},
+  v5_common10:{cfg:['公共 10 seed，空记忆，每局后在线更新','包的位置由代码判断，按位置提供 lift_bag / release_gripper','轨迹记忆：每局一条代码事实记录，规则由程序核实'],
+    chg:['包的位置由颜色分割 + 左臂末端高度判断','新增代码动作 lift_bag','release_gripper 只在包已放在中间桌面时提供','中途决策输入里写明包的位置和下一步动作','记忆改为轨迹记忆'],
+    ana:['5/10，和基线持平。比基线多成功 43，少成功 741192977','lift_bag 3 次，全部有效；release_gripper 3 次，全部有效','5 局失败全在右臂：E、F、J、K、L 各 1 局','漏判 1 次：遮挡让包像是"已移动"，没有提供 lift_bag'],
+    mem:[['最终规则（中文翻译；✓ 支持数，✗ 反对数）',V5.final_memory_zh.map((z,i)=>[z,V5.final_memory[i],V5.final_memory_src[i]])]], raw:[['配置记录',V5.config],['改动记录',V5.changes.join('\n')],['记忆机制记录',V5.memory_mechanism],['中途决策统计',V5.mid_decision_stats]]},
+};
+const li = a => `<ul>${a.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>`;
+function rolloutTable(v){
+  const rs=v.d.rollouts, hasCyc=rs.some(r=>r.cycle), hasBase=rs.some(r=>r.baseline_steps!=null);
+  const ncol=5+hasCyc+hasBase; let lastC=null, out='';
+  rs.forEach((r,i)=>{
+    if(hasCyc && r.cycle!==lastC){ lastC=r.cycle; const c=rs.filter(x=>x.cycle===r.cycle), ok=s=>c.filter(x=>(x.split==='train')===s&&x.success).length;
+      out+=`<tr class="cyc"><td colspan="${ncol}">第 ${r.cycle} 轮：train ${ok(true)}/4，validate ${ok(false)}/4</td></tr>`; }
+    out+=`<tr><td class="num">${esc(r.seed)}</td>${hasCyc?`<td>${esc(r.split)}</td>`:''}<td>${pill(r.success)}${r.success?'':`<span class="sub">${chip(r.tag[0])}${esc(CATS[r.tag[0]][0])}</span>`}</td><td class="num">${esc(r.steps)}</td>${hasBase?`<td class="num">${esc(r.baseline_steps)}</td>`:''}<td class="reason">${esc(r.reason)}${r.fix?`<span class="fix">${esc(r.fix)}</span>`:''}</td><td><button class="vbtn" type="button" data-v="${v.key}" data-i="${i}">▶</button></td></tr>`;
+  });
+  return `<div class="scroll"><table><thead><tr><th class="num">seed</th>${hasCyc?'<th>划分</th>':''}<th>结果</th><th class="num">步数</th>${hasBase?'<th class="num">基线步数</th>':''}<th>原因 / 过程</th><th>录像</th></tr></thead><tbody>${out}</tbody></table></div>`;
+}
+function renderPanel(key){
+  const v=V.find(x=>x.key===key), p=P[key], d=v.d;
+  let h=`<section class="col"><div class="vhead"><span class="big">${d.success}/${d.total}</span><span class="sub" style="display:inline">${esc(v.seeds)}</span></div>
+    <div class="facts"><div><h4>配置</h4>${li(p.cfg)}</div>${p.chg?`<div><h4>相对上一版的改动</h4>${li(p.chg)}</div>`:''}</div>
+    <div class="facts"><div><h4>结果分析</h4>${li(p.ana)}</div></div>`;
+  (p.mem||[]).forEach(([t,l])=>{ h+=`<details><summary>${esc(t)}（${l.length} 条）</summary><ul class="mem">${l.map(x=>Array.isArray(x)?`<li>${esc(x[0])}${x[2]?`<span class="src">${esc(x[2])}</span>`:''}<span class="sub">原文：${esc(x[1])}</span></li>`:`<li>${esc(x)}</li>`).join('')}</ul></details>`; });
+  h+=`<details><summary>详细记录</summary>${p.raw.map(([t,x])=>`<h3>${esc(t)}</h3><div class="prose">${esc(x)}</div>`).join('')}</details></section>`+rolloutTable(v);
+  document.getElementById('panel').innerHTML=h;
+}
+(function(){
+  const tabs=document.getElementById('tabs');
+  tabs.innerHTML=V.map(v=>`<button class="tab" role="tab" type="button" data-k="${v.key}" aria-selected="false">${esc(v.name)}<span class="rate">${v.d.success}/${v.d.total}</span></button>`).join('');
+  function sel(k){ closePop(); tabs.querySelectorAll('.tab').forEach(b=>b.setAttribute('aria-selected',b.dataset.k===k)); renderPanel(k); try{localStorage.setItem('hb-tab',k)}catch(_){} }
+  tabs.addEventListener('click',e=>{ const b=e.target.closest('.tab'); if(b) sel(b.dataset.k); });
+  let start='v5_common10'; try{ const s=localStorage.getItem('hb-tab'); if(s&&V.some(v=>v.key===s)) start=s; }catch(_){}
+  sel(start);
+})();
+</script>
+
+
+</body></html>
